@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract XenToken is ERC20{
 
-    constructor(uint _initialSupply) ERC20("Xen Token","XEN"){
-        _mint(msg.sender, _initialSupply);
+    constructor() ERC20("Xen Token","XEN"){
+        _mint(msg.sender, 10000 * (10 ** 18));
     }
 }
