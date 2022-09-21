@@ -28,8 +28,16 @@ export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
 export type { AvengersNFT } from "./contracts/AvengersNFT";
 export { AvengersNFT__factory } from "./factories/contracts/AvengersNFT__factory";
+export type { ERC20TokenTest } from "./contracts/ERC20TokenTest";
+export { ERC20TokenTest__factory } from "./factories/contracts/ERC20TokenTest__factory";
+export type { MultiSigWallet } from "./contracts/MultiSigWallet";
+export { MultiSigWallet__factory } from "./factories/contracts/MultiSigWallet__factory";
+export type { MultiSigWalletFactory } from "./contracts/MultiSigWalletFactory";
+export { MultiSigWalletFactory__factory } from "./factories/contracts/MultiSigWalletFactory__factory";
 export type { NFTMarket } from "./contracts/NFTMarket";
 export { NFTMarket__factory } from "./factories/contracts/NFTMarket__factory";
+export type { PieToken } from "./contracts/PieToken";
+export { PieToken__factory } from "./factories/contracts/PieToken__factory";
 export type { RewardToken } from "./contracts/RewardToken";
 export { RewardToken__factory } from "./factories/contracts/RewardToken__factory";
 export type { Vault } from "./contracts/Vault";

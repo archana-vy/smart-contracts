@@ -28,7 +28,6 @@ export interface NFTMarketInterface extends utils.Interface {
     "NFT()": FunctionFragment;
     "buyNFT(uint256,uint256)": FunctionFragment;
     "createNFTSale(uint256,uint256)": FunctionFragment;
-    "mintNFT(address,uint256)": FunctionFragment;
     "mintingFee()": FunctionFragment;
     "payToken()": FunctionFragment;
     "removeNFTSale(uint256)": FunctionFragment;
@@ -40,7 +39,6 @@ export interface NFTMarketInterface extends utils.Interface {
       | "NFT"
       | "buyNFT"
       | "createNFTSale"
-      | "mintNFT"
       | "mintingFee"
       | "payToken"
       | "removeNFTSale"
@@ -55,10 +53,6 @@ export interface NFTMarketInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "createNFTSale",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "mintNFT",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "mintingFee",
@@ -80,7 +74,6 @@ export interface NFTMarketInterface extends utils.Interface {
     functionFragment: "createNFTSale",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "mintNFT", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mintingFee", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "payToken", data: BytesLike): Result;
   decodeFunctionResult(
@@ -136,12 +129,6 @@ export interface NFTMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    mintNFT(
-      _to: PromiseOrValue<string>,
-      _fee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     mintingFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     payToken(overrides?: CallOverrides): Promise<[string]>;
@@ -171,12 +158,6 @@ export interface NFTMarket extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  mintNFT(
-    _to: PromiseOrValue<string>,
-    _fee: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   mintingFee(overrides?: CallOverrides): Promise<BigNumber>;
 
   payToken(overrides?: CallOverrides): Promise<string>;
@@ -203,12 +184,6 @@ export interface NFTMarket extends BaseContract {
     createNFTSale(
       _tokenId: PromiseOrValue<BigNumberish>,
       _newPrice: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    mintNFT(
-      _to: PromiseOrValue<string>,
-      _fee: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -244,12 +219,6 @@ export interface NFTMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    mintNFT(
-      _to: PromiseOrValue<string>,
-      _fee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     mintingFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     payToken(overrides?: CallOverrides): Promise<BigNumber>;
@@ -277,12 +246,6 @@ export interface NFTMarket extends BaseContract {
     createNFTSale(
       _tokenId: PromiseOrValue<BigNumberish>,
       _newPrice: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    mintNFT(
-      _to: PromiseOrValue<string>,
-      _fee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

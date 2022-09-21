@@ -57,9 +57,25 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.AvengersNFT__factory>;
     getContractFactory(
+      name: "ERC20TokenTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20TokenTest__factory>;
+    getContractFactory(
+      name: "MultiSigWallet",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MultiSigWallet__factory>;
+    getContractFactory(
+      name: "MultiSigWalletFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MultiSigWalletFactory__factory>;
+    getContractFactory(
       name: "NFTMarket",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NFTMarket__factory>;
+    getContractFactory(
+      name: "PieToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PieToken__factory>;
     getContractFactory(
       name: "RewardToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -129,10 +145,30 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.AvengersNFT>;
     getContractAt(
+      name: "ERC20TokenTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20TokenTest>;
+    getContractAt(
+      name: "MultiSigWallet",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MultiSigWallet>;
+    getContractAt(
+      name: "MultiSigWalletFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MultiSigWalletFactory>;
+    getContractAt(
       name: "NFTMarket",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.NFTMarket>;
+    getContractAt(
+      name: "PieToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PieToken>;
     getContractAt(
       name: "RewardToken",
       address: string,

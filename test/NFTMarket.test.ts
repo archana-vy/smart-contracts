@@ -1,7 +1,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { XenToken, AvengersNFT, NFTMarket } from "../src/types/contracts";
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+import { expect } from "chai";
+import { ethers } from "hardhat";
 
 describe("NFT Market Contract", () => {
     let addr1 : SignerWithAddress

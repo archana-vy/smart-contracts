@@ -2,7 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { AvengersNFT } from "./AvengersNFT";
+export type { ERC20TokenTest } from "./ERC20TokenTest";
+export type { MultiSigWallet } from "./MultiSigWallet";
+export type { MultiSigWalletFactory } from "./MultiSigWalletFactory";
 export type { NFTMarket } from "./NFTMarket";
+export type { PieToken } from "./PieToken";
 export type { RewardToken } from "./RewardToken";
 export type { Vault } from "./Vault";
 export type { XenToken } from "./XenToken";

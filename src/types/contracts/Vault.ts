@@ -13,7 +13,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -25,34 +29,143 @@ import type {
 
 export interface VaultInterface extends utils.Interface {
   functions: {
+    "approve(uint256)": FunctionFragment;
     "deposite(uint256)": FunctionFragment;
-    "getBalance()": FunctionFragment;
+    "getContractBalance()": FunctionFragment;
+    "getDepositerBalance(address)": FunctionFragment;
+    "isOwner(address)": FunctionFragment;
+    "owners(uint256)": FunctionFragment;
+    "requiredApprovals()": FunctionFragment;
+    "setRewardToken(address)": FunctionFragment;
+    "setXenToken(address)": FunctionFragment;
+    "submitWithdrawal(address,uint256)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "deposite" | "getBalance" | "withdraw"
+    nameOrSignatureOrTopic:
+      | "approve"
+      | "deposite"
+      | "getContractBalance"
+      | "getDepositerBalance"
+      | "isOwner"
+      | "owners"
+      | "requiredApprovals"
+      | "setRewardToken"
+      | "setXenToken"
+      | "submitWithdrawal"
+      | "withdraw"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "approve",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "deposite",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getBalance",
+    functionFragment: "getContractBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDepositerBalance",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isOwner",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "owners",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "requiredApprovals",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRewardToken",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setXenToken",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "submitWithdrawal",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
 
+  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposite", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getContractBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDepositerBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owners", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "requiredApprovals",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRewardToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setXenToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "submitWithdrawal",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "WithdrawApproval(address,uint256,address,uint256)": EventFragment;
+    "Withdrwan(uint256,address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "WithdrawApproval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdrwan"): EventFragment;
 }
+
+export interface WithdrawApprovalEventObject {
+  sender: string;
+  wdIndex: BigNumber;
+  to: string;
+  amount: BigNumber;
+}
+export type WithdrawApprovalEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber],
+  WithdrawApprovalEventObject
+>;
+
+export type WithdrawApprovalEventFilter =
+  TypedEventFilter<WithdrawApprovalEvent>;
+
+export interface WithdrwanEventObject {
+  wdIndex: BigNumber;
+  to: string;
+  amount: BigNumber;
+}
+export type WithdrwanEvent = TypedEvent<
+  [BigNumber, string, BigNumber],
+  WithdrwanEventObject
+>;
+
+export type WithdrwanEventFilter = TypedEventFilter<WithdrwanEvent>;
 
 export interface Vault extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -81,71 +194,283 @@ export interface Vault extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    deposite(
-      amount: PromiseOrValue<BigNumberish>,
+    approve(
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    deposite(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getContractBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getDepositerBalance(
+      _depositer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    isOwner(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    owners(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    requiredApprovals(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setRewardToken(
+      _reward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setXenToken(
+      _xen: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    submitWithdrawal(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     withdraw(
-      amount: PromiseOrValue<BigNumberish>,
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
-  deposite(
-    amount: PromiseOrValue<BigNumberish>,
+  approve(
+    _wdIndex: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+  deposite(
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getDepositerBalance(
+    _depositer: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  isOwner(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  owners(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  requiredApprovals(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setRewardToken(
+    _reward: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setXenToken(
+    _xen: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  submitWithdrawal(
+    _to: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   withdraw(
-    amount: PromiseOrValue<BigNumberish>,
+    _wdIndex: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    deposite(
-      amount: PromiseOrValue<BigNumberish>,
+    approve(
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    deposite(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDepositerBalance(
+      _depositer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isOwner(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    owners(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    requiredApprovals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setRewardToken(
+      _reward: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setXenToken(
+      _xen: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    submitWithdrawal(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdraw(
-      amount: PromiseOrValue<BigNumberish>,
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "WithdrawApproval(address,uint256,address,uint256)"(
+      sender?: null,
+      wdIndex?: null,
+      to?: null,
+      amount?: null
+    ): WithdrawApprovalEventFilter;
+    WithdrawApproval(
+      sender?: null,
+      wdIndex?: null,
+      to?: null,
+      amount?: null
+    ): WithdrawApprovalEventFilter;
+
+    "Withdrwan(uint256,address,uint256)"(
+      wdIndex?: null,
+      to?: null,
+      amount?: null
+    ): WithdrwanEventFilter;
+    Withdrwan(wdIndex?: null, to?: null, amount?: null): WithdrwanEventFilter;
+  };
 
   estimateGas: {
-    deposite(
-      amount: PromiseOrValue<BigNumberish>,
+    approve(
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    deposite(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDepositerBalance(
+      _depositer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isOwner(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    owners(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    requiredApprovals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setRewardToken(
+      _reward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setXenToken(
+      _xen: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    submitWithdrawal(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     withdraw(
-      amount: PromiseOrValue<BigNumberish>,
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    deposite(
-      amount: PromiseOrValue<BigNumberish>,
+    approve(
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    deposite(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getContractBalance(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDepositerBalance(
+      _depositer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isOwner(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    owners(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    requiredApprovals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setRewardToken(
+      _reward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setXenToken(
+      _xen: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    submitWithdrawal(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     withdraw(
-      amount: PromiseOrValue<BigNumberish>,
+      _wdIndex: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
